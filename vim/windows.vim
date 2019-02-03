@@ -24,4 +24,4 @@ let g:ale_cpp_clang_options = '
     \ -D_BOOL
     \ -DNT_PLUGIN'
 
-" let g:previm_open_cmd = ''
+let g:previm_open_cmd = 'C:/Program\ Files/Mozilla\ Firefox/firefox.exe'

@@ -16,8 +16,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'skywind3000/asyncrun.vim', {'On': 'asyncrun'}
 Plug 'troydm/easybuffer.vim', { 'On': 'EasyBuffer' }
 Plug 'majutsushi/tagbar', { 'On': 'tagbarToggle' }
-Plug 'previm/previm', { 'On': 'PrevimOpen' }
 Plug 'cocopon/vaffle.vim', { 'On': 'Vaffle' }
+Plug 'previm/previm'
 Plug 'tyru/caw.vim'
 Plug 'w0rp/ale'
 Plug 'minoue/mayascripteditor.vim'
@@ -34,13 +34,14 @@ call plug#end()
 set number                      " Show line numbers
 set nowrap                      " No wrap
 set textwidth=0                 " Disable auto return
-" set colorcolumn=80              " Line at column 80
+set colorcolumn=120             " Line at column 80
 set ruler                       " show cursor line and column in the status line
 set nocursorline                " No highlight the screen line of the cursor
 set title                       " let vim set the title of the window
 set showcmd                     " show (partial) command in status line
 set norelativenumber
 set laststatus=2
+set viminfo='20                 " Set maximum number of old file display
 
 " Tab
 set showtabline=2               " Always show tab line
@@ -161,6 +162,9 @@ augroup END
 " #####################################
 " ######### PLUGIN SETTINGS ###########
 " #####################################
+
+" Vaffle
+let g:vaffle_auto_cd=1
 
 " Lightline
 let g:lightline = {
