@@ -25,3 +25,5 @@ let g:ale_cpp_clang_options = '
     \ -DNT_PLUGIN'
 
 let g:previm_open_cmd = 'C:/Program\ Files/Mozilla\ Firefox/firefox.exe'
+
+let $PYTHONPATH = $PYTHONPATH . 'C:/Program Files/Autodesk/Maya2017/devkit/other/pymel/extras/completion/py'

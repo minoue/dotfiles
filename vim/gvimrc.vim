@@ -1,4 +1,4 @@
-set guifont=Cica:h14
+set guifont=Cica:h12
 
 set antialias
 set guioptions-=e                   " Text-based tabline in GVIM
@@ -8,7 +8,7 @@ set vb t_vb=
 
 " Colorscheme
 set background=dark
-colorscheme eldar
+colorscheme vim-monokai-tasty
 
 " Save/load window size
 let g:save_window_file = expand('~/.vimwinpos')

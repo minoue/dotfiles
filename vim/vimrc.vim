@@ -25,6 +25,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'agude/vim-eldar'
 Plug 'mhinz/vim-startify'
+Plug 'patstockwell/vim-monokai-tasty'
 call plug#end()
 
 " #####################################
@@ -93,9 +94,9 @@ set ambiwidth=single            " what to to with unicode chars of ambiguous wit
 " ######## KEY REMAPPINGS #########
 " #################################
 
-nnoremap <F1> :bro ol<Enter>1<Enter>
+nnoremap <F1> :Startify<Enter>
 nnoremap <F2> :Vaffle<Enter>
-
+nnoremap <F3> :TagbarToggle<Enter>
 nnoremap <F4>  ggVG"+y
 " Copy current buffer to clipboard
 nnoremap <F5> :call MayaScriptEditorSendCmd()<Enter>
@@ -169,7 +170,7 @@ let g:vaffle_auto_cd=1
 
 " Lightline
 let g:lightline = {
-    \ 'colorscheme': 'PaperColor',
+    \ 'colorscheme': 'monokai_tasty',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \           [ 'gitbranch', 'readonly', 'filename', 'modified'] ]
