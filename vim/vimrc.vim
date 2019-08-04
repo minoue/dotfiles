@@ -150,6 +150,8 @@ inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 set completeopt=menuone     " Disable popup description
 
+nnoremap sh :call GitBash()<Enter>
+
 " for k in split("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_",'\zs')
 "   exec "imap <expr> " . k . " pumvisible() ? '" . k . "' : '" . k . "\<C-X>\<C-P>\<C-N>'"
 " endfor
@@ -201,7 +203,7 @@ function! QuickAsyncRun() abort
     if &filetype == 'cpp'
         exec "AsyncRun! g++ -std=c++11 % -o %<; ./%<"
     elseif &filetype == 'python'
-        exec "AsyncRun! time python %"
+        exec "AsyncRun! python %"
     endif
 endfunction
 
@@ -240,7 +242,7 @@ command! SetCurrentDir call SetCurrentDirFunc()
 
 function! Clang_format() abort
     let p = expand("%:p")
-    call system("clang-format -style=webkit -i " . p)
+    call system("clang-format -style=WebKit -i " . p)
     :edit
 endfunction
 command! ClangFormat call Clang_format()
@@ -249,38 +251,6 @@ function! MayaMake() abort
     exec "AsyncRun! cmake --build . --config Release --target install"
 endfunction
 
-function! MayaBuild() abort
-    if has("unix")
-        exec "AsyncRun! cmake -DCMAKE_BUILD_TYPE=Release -DMAYA_VERSION=2018 ../"
-    elseif has("win32")
-        " Windows
-        exec "AsyncRun! cmake -G 'Visual Studio 15 2017 Win64' -DMAYA_VERSION=2018 ../"
-    endif
-endfunction
-
-" ######## YouCompleteMe ##########
-" Disable diagnostics
-let g:ycm_enable_diagnostic_highlighting = 0
-let g:ycm_show_diagnostics_ui = 0
-let g:ycm_enable_diagnostic_signs = 0
-
-" Disable YCM for CPP.
-let g:ycm_filetype_blacklist = { 'cpp': 1 }
-let g:ycm_semantic_triggers = { 'cpp': [] }
-let g:ycm_filetype_specific_completion_to_disable = { 'cpp':1, 'txt':1}
-let g:ycm_filetype_blacklist = {
-    \ 'cpp': 1,
-    \ 'tagbar': 1,
-    \ 'qf': 1,
-    \ 'notes': 1,
-    \ 'markdown': 1,
-    \ 'unite': 1,
-    \ 'text': 1
-\}
-
-" ######## vim_clang ##########
-let g:clang_auto = 1
-let g:clang_cpp_completeopt = 'longest,menuone'
 
 " ######## ALE ##########
 let g:ale_linters = {
@@ -294,6 +264,9 @@ let g:ale_linters = {
 " JSON
 let g:vim_json_syntax_conceal = 0
 set conceallevel=0
+
+" RST
+set nofoldenable
 
 " CSH
 " Set csh syntax to cshrc
