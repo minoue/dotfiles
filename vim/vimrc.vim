@@ -20,6 +20,7 @@ Plug 'cocopon/vaffle.vim', { 'On': 'Vaffle' }
 Plug 'previm/previm'
 Plug 'tyru/caw.vim'
 Plug 'w0rp/ale'
+Plug 'ycm-core/YouCompleteMe'
 Plug 'minoue/mayaScriptEditor.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
@@ -276,10 +277,18 @@ autocmd BufNewFile,BufRead * if expand('%:t') == 'cshrc' | set syntax=csh | endi
 " #####################################
 " ########    OS SETTINGS    ##########
 " #####################################
+"
+" Load private settings
+" 
 if has("unix")
     let s:uname = system("uname -s")
     if s:uname == "Darwin\n"
         " Mac
+        try
+            source $HOME/dotfiles/vim/mac.vim
+        catch
+            echo "Failed to load env file"
+        endtry
     else
         "Linux
         try
