@@ -1,4 +1,19 @@
-set guifont=Cica:h12
+if has("unix")
+    let s:uname = system("uname -s")
+    if s:uname == "Darwin\n"
+        " Mac
+        set guifont=Cica:h18
+        set guifontwide=Cica:h18
+    else
+        "Linux
+        set guifont=Cica\ 12
+        set guifontwide=Cica\ 12
+    endif
+elseif has("win32")
+    " Windows
+    set guifont=Cica:h12
+    set guifontwide=Cica:h12
+endif
 
 set antialias
 set guioptions-=e                   " Text-based tabline in GVIM
