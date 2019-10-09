@@ -1,0 +1,39 @@
+PATH=${HOME}/bin:${PATH}
+PS1="\s[\u@\h] \$PWD \n>>"
+
+alias u="cd .."
+alias uu="cd ../../"
+alias uuu="cd ../../../"
+alias uuuu="cd ../../../../"
+
+alias gis='git status'
+alias gib='git branch'
+alias gic='git commit'
+alias gip='git pull'
+alias gid='git diff'
+
+alias rel="source ~/.bashrc"
+
+# export TERM=xterm-256color
+export PYTHONDONTWRITEBYTECODE=1
+
+if [ "$(uname)" == 'Darwin' ]; then
+    OS='Mac'
+    alias ls="ls -G"
+    alias la="ls -laG"
+    alias lah="ls -lahG"
+    export PATH=$PATH:~/Library/Python/2.7/bin
+    alias vim="/Applications/MacVim.app/Contents/bin/vim"
+elif [ "$(uname)" == 'MINGW64_NT-10.0' ]; then
+    OS='MinGW64'
+elif [ "$(uname)" == 'MSYS_NT-1.00' ]; then
+    OS='MSYS2'
+elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+    OS='Linux'
+elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
+    OS='Cygwin'
+else
+    echo "Your platform ($(uname -a)) is not supported."
+    # exit 1
+fi
+echo 'done'
