@@ -20,7 +20,12 @@ Plug 'cocopon/vaffle.vim', { 'On': 'Vaffle' }
 Plug 'previm/previm'
 Plug 'tyru/caw.vim'
 Plug 'w0rp/ale'
-" Plug 'ycm-core/YouCompleteMe'
+
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
 Plug 'minoue/mayaScriptEditor.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
@@ -273,6 +278,13 @@ set nofoldenable
 " Set csh syntax to cshrc
 autocmd BufNewFile,BufRead * if expand('%:t') == 'cshrc' | set syntax=csh | endif
 
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
 
 " #####################################
 " ########    OS SETTINGS    ##########
