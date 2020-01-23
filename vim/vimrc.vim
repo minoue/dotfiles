@@ -11,12 +11,13 @@ set background=dark
 " #####################################
 " ########## PLUGIN INSTALL ###########
 " #####################################
+"
 
 call plug#begin('~/.vim/plugged')
 Plug 'skywind3000/asyncrun.vim', {'On': 'asyncrun'}
 Plug 'troydm/easybuffer.vim', { 'On': 'EasyBuffer' }
 Plug 'majutsushi/tagbar', { 'On': 'tagbarToggle' }
-Plug 'cocopon/vaffle.vim', { 'On': 'Vaffle' }
+Plug 'lambdalisue/fila.vim', { 'On': 'Fila'}
 Plug 'previm/previm'
 Plug 'tyru/caw.vim'
 Plug 'w0rp/ale'
@@ -36,7 +37,7 @@ call plug#end()
 set number                      " Show line numbers
 set nowrap                      " No wrap
 set textwidth=0                 " Disable auto return
-set colorcolumn=120             " Line at column 80
+set colorcolumn=100             " Line at column 80
 set ruler                       " show cursor line and column in the status line
 set nocursorline                " No highlight the screen line of the cursor
 set title                       " let vim set the title of the window
@@ -95,7 +96,7 @@ set ambiwidth=single            " what to to with unicode chars of ambiguous wit
 " #################################
 
 nnoremap <F1> :Startify<Enter>
-nnoremap <F2> :Vaffle<Enter>
+nnoremap <F2> :Fila -drawer -toggle<Enter>
 nnoremap <F3> :TagbarToggle<Enter>
 nnoremap <F4>  ggVG"+y
 " Copy current buffer to clipboard
@@ -255,6 +256,7 @@ endfunction
 " ######## ALE ##########
 let g:ale_linters = {
 \   'cpp': ['clang'],
+\   'python': ['flake8'],
 \}
 
 " #####################################
