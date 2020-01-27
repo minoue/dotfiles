@@ -23,7 +23,7 @@ if [ "$(uname)" == 'Darwin' ]; then
     alias ls="ls -G"
     alias la="ls -laG"
     alias lah="ls -lahG"
-    export PATH=$PATH:~/Library/Python/2.7/bin:$HOME/.nodebrew/node/v13.0.1/bin
+    export PATH=$PATH:~/Library/Python/2.7/bin:$HOME/.nodebrew/node/v13.0.1/bin:/Applications/CMake.app/Contents/bin
     alias vim="/Applications/MacVim.app/Contents/bin/vim"
 elif [ "$(uname)" == 'MINGW64_NT-10.0' ]; then
     OS='MinGW64'
