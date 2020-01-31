@@ -27,6 +27,8 @@ if [ "$(uname)" == 'Darwin' ]; then
     alias vim="/Applications/MacVim.app/Contents/bin/vim"
 elif [ "$(uname)" == 'MINGW64_NT-10.0' ]; then
     OS='MinGW64'
+    alias la="ls -la"
+    alias lah="ls -lah"
 elif [ "$(uname)" == 'MSYS_NT-1.00' ]; then
     OS='MSYS2'
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
