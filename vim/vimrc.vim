@@ -96,7 +96,7 @@ set ambiwidth=single            " what to to with unicode chars of ambiguous wit
 " #################################
 
 nnoremap <F1> :Startify<Enter>
-nnoremap <F2> :Fila -drawer -toggle<Enter>
+nnoremap <F2> :Fern . -drawer -toggle<Enter>
 nnoremap <F3> :TagbarToggle<Enter>
 nnoremap <F4>  ggVG"+y
 " Copy current buffer to clipboard
