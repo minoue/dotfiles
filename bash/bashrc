@@ -23,8 +23,16 @@ if [ "$(uname)" == 'Darwin' ]; then
     alias ls="ls -G"
     alias la="ls -laG"
     alias lah="ls -lahG"
-    export PATH=$PATH:~/Library/Python/2.7/bin:$HOME/.nodebrew/node/v13.0.1/bin:/Applications/CMake.app/Contents/bin
+
+    export PATH=$PATH:~/Library/Python/2.7/bin:$HOME
+    export PATH=$PATH:$HOME/.nodebrew/node/v13.0.1/bin
+    export PATH=$PATH:/Applications/CMake.app/Contents/bin
+    export PATH=/usr/local/opt/python@3.8/bin:$PATH
+
     alias vim="/Applications/MacVim.app/Contents/bin/vim"
+    alias maya="cd /Users/minoue/Library/Preferences/Autodesk/maya"
+    alias setocio="export OCIO=/Users/minoue/dev/aces_1.0.3/config.ocio"
+
 elif [ "$(uname)" == 'MINGW64_NT-10.0' ]; then
     OS='MinGW64'
     alias la="ls -la"
