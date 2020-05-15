@@ -6,8 +6,8 @@ if has("unix")
         set guifontwide=Cica:h18
     else
         "Linux
-        set guifont=Cica\ 12
-        set guifontwide=Cica\ 12
+        set guifont=Fixed\ 14
+        set guifontwide=Fixed\ 14
     endif
 elseif has("win32")
     " Windows
