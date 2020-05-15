@@ -17,16 +17,20 @@ call plug#begin('~/.vim/plugged')
 Plug 'skywind3000/asyncrun.vim', {'On': 'asyncrun'}
 Plug 'troydm/easybuffer.vim', { 'On': 'EasyBuffer' }
 Plug 'majutsushi/tagbar', { 'On': 'tagbarToggle' }
-Plug 'lambdalisue/fila.vim', { 'On': 'Fila'}
+Plug 'lambdalisue/fern.vim'
 Plug 'previm/previm'
 Plug 'tyru/caw.vim'
 Plug 'w0rp/ale'
+Plug 'cohama/agit.vim'
 Plug 'minoue/mayaScriptEditor.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
-Plug 'agude/vim-eldar'
 Plug 'mhinz/vim-startify'
 Plug 'patstockwell/vim-monokai-tasty'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/vim-lsp'
 call plug#end()
 
 " #####################################
@@ -168,8 +172,34 @@ augroup END
 " ######### PLUGIN SETTINGS ###########
 " #####################################
 
-" Vaffle
-let g:vaffle_auto_cd=1
+
+if executable('pyls')
+    call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': { server_info -> ['pyls'] },
+        \ 'whitelist': ['python'],
+        \ 'workspace_config': {'pyls': {'plugins': {
+        \     'mccabe'              : { 'enabled': v:false },
+        \     'preload'             : { 'enabled': v:false },
+        \     'pycodestyle'         : { 'enabled': v:false },
+        \     'pydocstyle'          : { 'enabled': v:false },
+        \     'pyflakes'            : { 'enabled': v:false },
+        \     'pylint'              : { 'enabled': v:false },
+        \     'rope_completion'     : { 'enabled': v:false },
+        \     'yapf'                : { 'enabled': v:false },
+        \
+        \     'jedi' : {'extra_paths' : [] },
+        \     'jedi_completion'     : { 'enabled': v:true, 'include_params': v:true },
+        \     'jedi_definition'     : { 'enabled': v:true, 'follow_imports': v:true, 'follow_builtin_imports': v:true },
+        \     'jedi_hover'          : { 'enabled': v:true },
+        \     'jedi_references'     : { 'enabled': v:true },
+        \     'jedi_signature_help' : { 'enabled': v:true },
+        \     'jedi_symbols'        : { 'enabled': v:true },
+        \ }}},
+        \ })
+    autocmd FileType python setlocal omnifunc=lsp#complete
+endif
+
 
 " Lightline
 let g:lightline = {
