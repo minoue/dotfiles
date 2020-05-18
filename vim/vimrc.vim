@@ -20,13 +20,15 @@ Plug 'majutsushi/tagbar', { 'On': 'tagbarToggle' }
 Plug 'lambdalisue/fern.vim'
 Plug 'previm/previm'
 Plug 'tyru/caw.vim'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 Plug 'cohama/agit.vim'
 Plug 'minoue/mayaScriptEditor.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-startify'
-Plug 'patstockwell/vim-monokai-tasty'
+" Plug 'patstockwell/vim-monokai-tasty'
+
+" LSP
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
@@ -172,38 +174,24 @@ augroup END
 " ######### PLUGIN SETTINGS ###########
 " #####################################
 
+let g:lsp_log_file = '/Users/minoue/lsp_log.txt'
+let g:lsp_diagnostics_enabled = 1
 
-if executable('pyls')
-    call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': { server_info -> ['pyls'] },
-        \ 'whitelist': ['python'],
-        \ 'workspace_config': {'pyls': {'plugins': {
-        \     'mccabe'              : { 'enabled': v:false },
-        \     'preload'             : { 'enabled': v:false },
-        \     'pycodestyle'         : { 'enabled': v:false },
-        \     'pydocstyle'          : { 'enabled': v:false },
-        \     'pyflakes'            : { 'enabled': v:false },
-        \     'pylint'              : { 'enabled': v:false },
-        \     'rope_completion'     : { 'enabled': v:false },
-        \     'yapf'                : { 'enabled': v:false },
-        \
-        \     'jedi' : {'extra_paths' : [] },
-        \     'jedi_completion'     : { 'enabled': v:true, 'include_params': v:true },
-        \     'jedi_definition'     : { 'enabled': v:true, 'follow_imports': v:true, 'follow_builtin_imports': v:true },
-        \     'jedi_hover'          : { 'enabled': v:true },
-        \     'jedi_references'     : { 'enabled': v:true },
-        \     'jedi_signature_help' : { 'enabled': v:true },
-        \     'jedi_symbols'        : { 'enabled': v:true },
-        \ }}},
-        \ })
+if (executable('pyls'))
+    augroup LspPython
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+            \ 'name': 'pyls',
+            \ 'cmd': { server_info -> ['pyls'] },
+            \ 'whitelist': ['python'],
+            \})
+    augroup END
     autocmd FileType python setlocal omnifunc=lsp#complete
 endif
 
-
 " Lightline
 let g:lightline = {
-    \ 'colorscheme': 'monokai_tasty',
+    \ 'colorscheme': 'one',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \           [ 'gitbranch', 'readonly', 'filename', 'modified'] ]
