@@ -26,7 +26,7 @@ Plug 'minoue/mayaScriptEditor.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-startify'
-" Plug 'patstockwell/vim-monokai-tasty'
+Plug 'patstockwell/vim-monokai-tasty'
 
 " LSP
 Plug 'prabirshrestha/async.vim'
@@ -174,7 +174,7 @@ augroup END
 " ######### PLUGIN SETTINGS ###########
 " #####################################
 
-let g:lsp_log_file = '/Users/minoue/lsp_log.txt'
+" let g:lsp_log_file = '/Users/minoue/lsp_log.txt'
 let g:lsp_diagnostics_enabled = 1
 
 if (executable('pyls'))

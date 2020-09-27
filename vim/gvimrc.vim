@@ -22,10 +22,9 @@ set guioptions+=c
 set vb t_vb=
 
 " Colorscheme
-set background=light
-" colorscheme vim-monokai-tasty
+set background=dark
+colorscheme vim-monokai-tasty
 autocmd ColorScheme * highlight Normal ctermbg=1 guibg=#f5f5f5
-colorscheme delek
 
 " Save/load window size
 let g:save_window_file = expand('~/.vimwinpos')
