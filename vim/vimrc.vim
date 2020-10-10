@@ -20,7 +20,6 @@ Plug 'majutsushi/tagbar', { 'On': 'tagbarToggle' }
 Plug 'lambdalisue/fern.vim'
 Plug 'previm/previm'
 Plug 'tyru/caw.vim'
-" Plug 'w0rp/ale'
 Plug 'cohama/agit.vim'
 Plug 'minoue/mayaScriptEditor.vim'
 Plug 'itchyny/lightline.vim'
@@ -176,6 +175,7 @@ augroup END
 
 " let g:lsp_log_file = '/Users/minoue/lsp_log.txt'
 let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
 
 if (executable('pyls'))
     augroup LspPython
@@ -187,6 +187,18 @@ if (executable('pyls'))
             \})
     augroup END
     autocmd FileType python setlocal omnifunc=lsp#complete
+endif
+
+if (executable('clangd'))
+    augroup LspCpp
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+            \ 'name': 'clangd',
+            \ 'cmd': { server_info -> ['clangd'] },
+            \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+            \})
+    augroup END
+    autocmd FileType cpp setlocal omnifunc=lsp#complete
 endif
 
 " Lightline
@@ -270,12 +282,6 @@ function! MayaMake() abort
     exec "AsyncRun! cmake --build . --config Release --target install"
 endfunction
 
-
-" ######## ALE ##########
-let g:ale_linters = {
-\   'cpp': ['clang'],
-\   'python': ['flake8'],
-\}
 
 " #####################################
 " ######## LANGUAGE SETTINGS ##########
