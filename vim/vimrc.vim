@@ -21,6 +21,7 @@ Plug 'lambdalisue/fern.vim'
 Plug 'previm/previm'
 Plug 'tyru/caw.vim'
 Plug 'cohama/agit.vim'
+Plug 'dense-analysis/ale'
 Plug 'minoue/mayaScriptEditor.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
@@ -218,6 +219,11 @@ augroup PrevimSettings
     autocmd!
     autocmd BufNewFile, BufRead *.{md, mdwn, mkd, mkdn, mark*} set filetype=markdown
 augroup END
+
+" YouCompleteMe
+let g:ycm_show_diagnostics_ui = 1
+let g:ycm_global_ycm_extra_conf = '${HOME}/.ycm_extra_conf.py'
+let g:ycm_min_num_of_chars_for_completion = 2
 
 
 " #####################################
