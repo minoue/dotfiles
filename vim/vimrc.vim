@@ -25,13 +25,11 @@ Plug 'minoue/mayaScriptEditor.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-startify'
-Plug 'patstockwell/vim-monokai-tasty'
 
-" LSP
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/vim-lsp'
+" theme
+Plug 'patstockwell/vim-monokai-tasty'
+Plug 'ghifarit53/tokyonight-vim'
+
 call plug#end()
 
 " #####################################
@@ -173,33 +171,6 @@ augroup END
 " ######### PLUGIN SETTINGS ###########
 " #####################################
 
-" let g:lsp_log_file = '/Users/minoue/lsp_log.txt'
-let g:lsp_diagnostics_enabled = 1
-let g:lsp_diagnostics_echo_cursor = 1
-
-if (executable('pyls'))
-    augroup LspPython
-        autocmd!
-        autocmd User lsp_setup call lsp#register_server({
-            \ 'name': 'pyls',
-            \ 'cmd': { server_info -> ['pyls'] },
-            \ 'whitelist': ['python'],
-            \})
-    augroup END
-    autocmd FileType python setlocal omnifunc=lsp#complete
-endif
-
-if (executable('clangd'))
-    augroup LspCpp
-        autocmd!
-        autocmd User lsp_setup call lsp#register_server({
-            \ 'name': 'clangd',
-            \ 'cmd': { server_info -> ['clangd'] },
-            \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
-            \})
-    augroup END
-    autocmd FileType cpp setlocal omnifunc=lsp#complete
-endif
 
 " Lightline
 let g:lightline = {
