@@ -6,14 +6,15 @@ if has("unix")
         set guifontwide=MonacoForPowerline:h12
     else
         "Linux
-        set guifont=Fixed\ 14
-        set guifontwide=Fixed\ 14
+        set guifont=Unifont-JPmono\ 12
+        set guifontwide=Unifont-JPmono\ 12
     endif
 elseif has("win32")
     " Windows
-    set guifont=Cica:h12
-    set guifontwide=Cica:h12
+    set guifont=Unifont-JPmono:h12
+    set guifontwide=Unifont-JPmono:h12
 endif
+
 
 set antialias
 set guioptions-=e                   " Text-based tabline in GVIM
