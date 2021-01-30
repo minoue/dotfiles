@@ -188,6 +188,7 @@ let g:lightline = {
     \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3"},
     \ }
 
+
 function! LightlineReadonly()
     return &readonly && &filetype !=# 'help' ? "\ue0a2" : ''
 endfunction
@@ -219,11 +220,6 @@ augroup PrevimSettings
     autocmd!
     autocmd BufNewFile, BufRead *.{md, mdwn, mkd, mkdn, mark*} set filetype=markdown
 augroup END
-
-" YouCompleteMe
-let g:ycm_show_diagnostics_ui = 1
-let g:ycm_global_ycm_extra_conf = '${HOME}/.ycm_extra_conf.py'
-let g:ycm_min_num_of_chars_for_completion = 2
 
 
 " #####################################
