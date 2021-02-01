@@ -184,19 +184,17 @@ let g:lightline = {
     \   'gitbranch': 'LightlineGitBranch',
     \   'readonly': 'LightlineReadonly',
     \ },
-    \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-    \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3"},
     \ }
 
 
 function! LightlineReadonly()
-    return &readonly && &filetype !=# 'help' ? "\ue0a2" : ''
+    return &readonly && &filetype !=# 'help' ? '🔒' : ''
 endfunction
 
 function! LightlineGitBranch()
     let bran = gitbranch#name()
     if bran != ''
-        return "\ue0a0:" . bran
+        return bran
     else
         return ''
     endif
