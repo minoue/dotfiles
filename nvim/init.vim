@@ -21,7 +21,7 @@ Plug 'lambdalisue/fern.vim'
 Plug 'previm/previm'
 Plug 'tyru/caw.vim'
 Plug 'cohama/agit.vim'
-Plug 'dense-analysis/ale'
+" Plug 'dense-analysis/ale'
 Plug 'minoue/mayaScriptEditor.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
@@ -177,6 +177,7 @@ augroup END
 let s:nimlspexecutable = "nimlsp"
 let g:lsp_log_verbose = 0
 let g:lsp_log_file = expand('~/vim-lsp.log')
+let g:lsp_diagnostics_enabled = 1
 " for asyncomplete.vim log
 let g:asyncomplete_log_file = expand('~/asyncomplete.log')
 
@@ -230,6 +231,8 @@ function! QuickAsyncRun() abort
         exec "AsyncRun! g++ -std=c++11 % -o %<; ./%<"
     elseif &filetype == 'python'
         exec "AsyncRun! python %"
+    elseif &filetype == 'nim'
+        exec "AsyncRun! nim c -r %"
     endif
 endfunction
 
@@ -293,6 +296,7 @@ set nofoldenable
 " Set csh syntax to cshrc
 autocmd BufNewFile,BufRead * if expand('%:t') == 'cshrc' | set syntax=csh | endif
 
+colorscheme vim-monokai-tasty
 
 " #####################################
 " ########    OS SETTINGS    ##########
