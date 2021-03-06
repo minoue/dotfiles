@@ -27,6 +27,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-startify'
 Plug 'zah/nim.vim'
+Plug 'tyru/open-browser.vim'
 
 " LSP
 Plug 'prabirshrestha/vim-lsp'
@@ -324,7 +325,7 @@ if has("unix")
 elseif has("win32")
     " Windows
     try
-        source $HOME/windows.vim
+        source $HOME/AppData/Local/nvim/win.vim
     catch
         echo "Failed to load env file"
     endtry
