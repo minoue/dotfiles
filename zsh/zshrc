@@ -1,0 +1,7 @@
+PS1="%m %~ 
+>> "
+export PATH=$HOME/opt/nvim-osx64/bin:$PATH
+export PATH=/usr/local/opt/python@3.9/libexec/bin:$PATH
+
+alias ls="ls -G"
+alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
