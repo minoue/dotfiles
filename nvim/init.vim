@@ -6,39 +6,28 @@ if &compatible
   set nocompatible
 endif
 
-set background=dark
-
 " #####################################
 " ########## PLUGIN INSTALL ###########
 " #####################################
-"
+
 
 call plug#begin('~/.vim/plugged')
 Plug 'skywind3000/asyncrun.vim', {'On': 'asyncrun'}
 Plug 'troydm/easybuffer.vim', { 'On': 'EasyBuffer' }
 Plug 'majutsushi/tagbar', { 'On': 'tagbarToggle' }
 Plug 'lambdalisue/fern.vim'
-Plug 'previm/previm'
+Plug 'lambdalisue/fern-bookmark.vim'
 Plug 'tyru/caw.vim'
-Plug 'cohama/agit.vim'
-" Plug 'dense-analysis/ale'
-Plug 'minoue/mayaScriptEditor.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
-Plug 'mhinz/vim-startify'
-Plug 'zah/nim.vim'
-Plug 'tyru/open-browser.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+" Plug 'patstockwell/vim-monokai-tasty'
 
 " LSP
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/async.vim'
-Plug 'mattn/vim-lsp-settings'
-
-" theme
-Plug 'patstockwell/vim-monokai-tasty'
-Plug 'ghifarit53/tokyonight-vim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
 
 call plug#end()
 
@@ -106,12 +95,12 @@ set ambiwidth=single            " what to to with unicode chars of ambiguous wit
 " ######## KEY REMAPPINGS #########
 " #################################
 
-nnoremap <F1> :Startify<Enter>
+nnoremap <F1> :Fern bookmark:///<Enter>
 nnoremap <F2> :Fern . -drawer -toggle<Enter>
 nnoremap <F3> :TagbarToggle<Enter>
 nnoremap <F4>  ggVG"+y
 " Copy current buffer to clipboard
-nnoremap <F5> :call MayaScriptEditorSendCmd()<Enter>
+nnoremap <F5> :SendToMaya()<Enter>
 
 " Cursor move remapping
 noremap j gj
@@ -156,48 +145,51 @@ au FileType qf nnoremap <silent><buffer>q :quit<CR>
 " terminal settings
 tnoremap <ESC> <C-w><S-n>
 
-" Omni complete
-set omnifunc=syntaxcomplete#Complete
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-" set completeopt=menuone     " Disable popup description
-
-
 augroup vimrc-auto-cursorline
   autocmd!
   autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
   autocmd CursorHold,CursorHoldI * setlocal cursorline
 augroup END
 
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 
 " #####################################
 " ######### PLUGIN SETTINGS ###########
 " #####################################
 
-" LSP
-let s:nimlspexecutable = "nimlsp"
-let g:lsp_log_verbose = 0
-let g:lsp_log_file = expand('~/vim-lsp.log')
-let g:lsp_diagnostics_enabled = 1
-" for asyncomplete.vim log
-let g:asyncomplete_log_file = expand('~/asyncomplete.log')
+set completeopt=menu,menuone,noselect
 
-" let g:asyncomplete_auto_popup = 0
+lua <<EOF
+  -- Setup nvim-cmp.
+  local cmp = require'cmp'
 
-if has('win32')
-   let s:nimlspexecutable = "nimlsp.cmd"
-   " Windows has no /tmp directory, but has $TEMP environment variable
-   let g:lsp_log_file = expand('$TEMP/vim-lsp.log')
-   let g:asyncomplete_log_file = expand('$TEMP/asyncomplete.log')
-endif
+  cmp.setup({
+    mapping = {
+      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.close(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = {
+      { name = 'nvim_lsp' },
+      { name = 'buffer' },
+    }
+  })
 
-if executable(s:nimlspexecutable)
-   au User lsp_setup call lsp#register_server({
-   \ 'name': 'nimlsp',
-   \ 'cmd': {server_info->[s:nimlspexecutable]},
-   \ 'whitelist': ['nim'],
-   \ })
-endif
+  -- Setup lspconfig.
+  require('lspconfig').clangd.setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  }
+
+  require('lspconfig').pylsp.setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  }
+EOF
+
 
 " Lightline
 let g:lightline = {
@@ -277,11 +269,6 @@ function! Clang_format() abort
 endfunction
 command! ClangFormat call Clang_format()
 
-function! MayaMake() abort
-    exec "AsyncRun! cmake --build . --config Release --target install"
-endfunction
-
-
 " #####################################
 " ######## LANGUAGE SETTINGS ##########
 " #####################################
@@ -296,8 +283,6 @@ set nofoldenable
 " CSH
 " Set csh syntax to cshrc
 autocmd BufNewFile,BufRead * if expand('%:t') == 'cshrc' | set syntax=csh | endif
-
-colorscheme vim-monokai-tasty
 
 " #####################################
 " ########    OS SETTINGS    ##########
