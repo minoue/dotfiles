@@ -2,9 +2,8 @@
 
 if [ "$(uname)" == 'Darwin' ]; then
     OS='Mac'
-    ln -sf ~/dotfiles/vim/vimrc.vim ~/.vimrc
-    ln -sf ~/dotfiles/vim/gvimrc.vim ~/.gvimrc
-    ln -sf ~/dotfiles/bash/bashrc ~/.bashrc
+    ln -sf ~/dotfiles/zsh/zshrc ~/.zshrc
+    ln -sf ~/dotfiles/nvim/init.vim ~/.config/nvim/init.vim
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     OS='Linux'
     ln -sf ~/dotfiles/vim/vimrc.vim ~/.vimrc
