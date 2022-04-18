@@ -12,7 +12,6 @@ endif
 
 
 call plug#begin('~/.vim/plugged')
-Plug 'skywind3000/asyncrun.vim', {'On': 'asyncrun'}
 Plug 'troydm/easybuffer.vim', { 'On': 'EasyBuffer' }
 Plug 'majutsushi/tagbar', { 'On': 'tagbarToggle' }
 Plug 'lambdalisue/fern.vim'
@@ -160,6 +159,7 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " ######### PLUGIN SETTINGS ###########
 " #####################################
 
+set omnifunc=syntaxcomplete#Complete
 set completeopt=menu,menuone,noselect
 
 lua <<EOF
@@ -221,11 +221,11 @@ endfunction
 " Asyncrun
 function! QuickAsyncRun() abort
     if &filetype == 'cpp'
-        exec "AsyncRun! g++ -std=c++11 % -o %<; ./%<"
+        exec "!g++ -o %< %; ./%<"
     elseif &filetype == 'python'
-        exec "AsyncRun! python %"
+        exec "!python3 %"
     elseif &filetype == 'nim'
-        exec "AsyncRun! nim c -r %"
+        exec "!nim c -r %"
     endif
 endfunction
 
