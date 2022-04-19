@@ -26,6 +26,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
 
 call plug#end()
@@ -188,6 +189,7 @@ lua <<EOF
     sources = {
       { name = 'nvim_lsp' },
       { name = 'buffer' },
+      { name = 'path' },
     }
   }
 
