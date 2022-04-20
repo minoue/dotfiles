@@ -39,7 +39,7 @@ call plug#end()
 set number                      " Show line numbers
 set nowrap                      " No wrap
 set textwidth=0                 " Disable auto return
-set colorcolumn=100             " Line at column 80
+set colorcolumn=80              " Line at column 80
 set ruler                       " show cursor line and column in the status line
 set nocursorline                " No highlight the screen line of the cursor
 set title                       " let vim set the title of the window
@@ -95,8 +95,7 @@ set ambiwidth=single            " what to to with unicode chars of ambiguous wit
 " ######## KEY REMAPPINGS #########
 " #################################
 
-nnoremap <F1> :Fern bookmark:///<Enter>
-nnoremap <F2> :Fern . -drawer -toggle<Enter>
+nnoremap <F1> :VFiler<Enter>
 nnoremap <F3> :TagbarToggle<Enter>
 nnoremap <F4>  ggVG"+y
 " Copy current buffer to clipboard
@@ -169,10 +168,6 @@ lua <<EOF
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()
-            elseif vim.fn["vsnip#available"](1) == 1 then
-                feedkey("<Plug>(vsnip-expand-or-jump)", "")
-            elseif has_words_before() then
-                cmp.complete()
             else
                 fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
             end
@@ -181,8 +176,6 @@ lua <<EOF
         ["<S-Tab>"] = cmp.mapping(function()
             if cmp.visible() then
                 cmp.select_prev_item()
-            elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-                feedkey("<Plug>(vsnip-jump-prev)", "")
             end
         end, { "i", "s" }),
     },
