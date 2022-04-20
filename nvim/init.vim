@@ -14,12 +14,12 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'troydm/easybuffer.vim', { 'On': 'EasyBuffer' }
 Plug 'majutsushi/tagbar', { 'On': 'tagbarToggle' }
-Plug 'lambdalisue/fern.vim'
-Plug 'lambdalisue/fern-bookmark.vim'
 Plug 'tyru/caw.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'obaland/vfiler.vim'
 " Plug 'patstockwell/vim-monokai-tasty'
 
 " LSP
@@ -203,6 +203,16 @@ lua <<EOF
   }
 EOF
 
+" treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "c", "lua", "python", "cpp" },
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    -- disable = { "vue", "ruby" },  -- list of language that will be disabled
+  },
+}
+EOF
 
 " Lightline
 let g:lightline = {
