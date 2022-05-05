@@ -20,7 +20,7 @@ Plug 'itchyny/vim-gitbranch'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'obaland/vfiler.vim'
-" Plug 'patstockwell/vim-monokai-tasty'
+Plug 'patstockwell/vim-monokai-tasty'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -199,7 +199,7 @@ EOF
 " treesitter
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "lua", "python", "cpp" },
+  ensure_installed = { "c", "python", "cpp" },
   highlight = {
     enable = true,              -- false will disable the whole extension
     -- disable = { "vue", "ruby" },  -- list of language that will be disabled
@@ -237,7 +237,7 @@ endfunction
 " Asyncrun
 function! QuickAsyncRun() abort
     if &filetype == 'cpp'
-        exec "!g++ -o %< %; ./%<"
+        exec "!g++ -std=c++11 -o %< %; ./%<"
     elseif &filetype == 'python'
         exec "!python3 %"
     elseif &filetype == 'nim'
@@ -311,7 +311,7 @@ if has("unix")
     if s:uname == "Darwin\n"
         " Mac
         try
-            source $HOME/dotfiles/vim/mac.vim
+            source $HOME/dotfiles/nvim/mac.vim
         catch
             echo "Failed to load env file"
         endtry
