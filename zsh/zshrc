@@ -14,3 +14,5 @@ alias la="ls -laG"
 alias rel="source ~/.zshrc"
 
 alias ffmpegdevice='ffmpeg -f avfoundation -list_devices true -i ""'
+
+alias zbrush="/Applications/ZBrush\ 2022/ZBrush.app/Contents/MacOS/ZBrush"
