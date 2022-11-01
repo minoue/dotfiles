@@ -1,10 +1,16 @@
 PS1="%m %~ 
 >> "
 
-export PATH=$HOME/opt/nvim/bin:$PATH
-export PATH=$HOME/opt/ffmpeg/bin:$PATH
+export PATH=$HOME/opt/bin:$PATH
 export PATH=$HOME/Library/Python/3.8/bin:$PATH
+
+# Haxe
+export HAXE_STD_PATH=~/opt/haxe/4.2.5/std
+export HAXELIB_PATH=~/opt/haxe/haxe_libraries
+export HAXEPATH=~/opt/haxe/4.2.5
 
 alias ls="ls -G"
 alias la="ls -laG"
 alias rel="source ~/.zshrc"
+
+alias ffmpegdevice='ffmpeg -f avfoundation -list_devices true -i ""'
