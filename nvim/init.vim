@@ -97,7 +97,7 @@ set ambiwidth=single            " what to to with unicode chars of ambiguous wit
 
 nnoremap <F1> :VFiler<Enter>
 nnoremap <F3> :TagbarToggle<Enter>
-nnoremap <F4>  ggVG"+y
+nnoremap <F4> ggVG"+y
 " Copy current buffer to clipboard
 nnoremap <F5> :SendToMaya()<Enter>
 
@@ -109,9 +109,9 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" Copy and paste
-nnoremap Y "+y
-nnoremap P "+gP
+" Copy/Paste from/to clipboard
+vnoremap Y "+y
+nnoremap P "+p
 
 " Buffer management
 nnoremap <Space> :EasyBuffer<Enter>
