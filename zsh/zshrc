@@ -33,8 +33,4 @@ alias ls="ls -Gh"
 alias la="ls -laGh"
 alias rel="source ~/.zshrc"
 
-alias ffmpegdevice='ffmpeg -f avfoundation -list_devices true -i ""'
-alias zbrush="/Applications/ZBrush\ 2022/ZBrush.app/Contents/MacOS/ZBrush"
-alias dev="cd /Volumes/CT1000MX/git"
-
 source ~/dotfiles/zsh/mac.sh
