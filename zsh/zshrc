@@ -16,14 +16,6 @@ eval "$(pyenv init -)"
 #### C++ ####
 export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:~/.local/include
 
-# To run programs
-export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/.local/lib
-
-# To compile programs for mac
-export LIBRARY_PATH=$LIBRARY_PATH:~/.local/lib
-
-# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.local/lib
-
 #### Haxe ####
 # export HAXE_STD_PATH=~/opt/haxe/4.2.5/std
 # export HAXELIB_PATH=~/opt/haxe/haxe_libraries
@@ -33,4 +25,15 @@ alias ls="ls -Gh"
 alias la="ls -laGh"
 alias rel="source ~/.zshrc"
 
-source ~/dotfiles/zsh/mac.sh
+case "$OSTYPE" in
+    darwin*)
+        # To run programs
+        export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/.local/lib
+        # To compile programs for mac
+        export LIBRARY_PATH=$LIBRARY_PATH:~/.local/lib
+        source ~/dotfiles/zsh/mac.sh
+    ;;
+    linux*)
+        # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.local/lib
+    ;;
+esac
