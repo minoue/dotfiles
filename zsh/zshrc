@@ -1,18 +1,40 @@
 PS1="%m %~ 
 >> "
 
-export PATH=$HOME/opt/bin:$PATH
-export PATH=$HOME/Library/Python/3.8/bin:$PATH
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
-# Haxe
-export HAXE_STD_PATH=~/opt/haxe/4.2.5/std
-export HAXELIB_PATH=~/opt/haxe/haxe_libraries
-export HAXEPATH=~/opt/haxe/4.2.5
+# PATH
+export PATH=~/.local/bin:$PATH
 
-alias ls="ls -G"
-alias la="ls -laG"
+#### Python ####
+export PYENV_ROOT=$HOME/.pyenv
+export PATH=$PYENV_ROOT/bin:$PATH
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
+#### C++ ####
+export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:~/.local/include
+
+# To run programs
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/.local/lib
+
+# To compile programs for mac
+export LIBRARY_PATH=$LIBRARY_PATH:~/.local/lib
+
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.local/lib
+
+#### Haxe ####
+# export HAXE_STD_PATH=~/opt/haxe/4.2.5/std
+# export HAXELIB_PATH=~/opt/haxe/haxe_libraries
+# export HAXEPATH=~/opt/haxe/4.2.5
+
+alias ls="ls -Gh"
+alias la="ls -laGh"
 alias rel="source ~/.zshrc"
 
 alias ffmpegdevice='ffmpeg -f avfoundation -list_devices true -i ""'
-
 alias zbrush="/Applications/ZBrush\ 2022/ZBrush.app/Contents/MacOS/ZBrush"
+alias dev="cd /Volumes/CT1000MX/git"
+
+source ~/dotfiles/zsh/mac.sh
