@@ -6,6 +6,8 @@ if &compatible
   set nocompatible
 endif
 
+set runtimepath+=~/dotfiles/nvim/highlight
+
 " #####################################
 " ########## PLUGIN INSTALL ###########
 " #####################################
@@ -21,6 +23,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'obaland/vfiler.vim'
 Plug 'patstockwell/vim-monokai-tasty'
+Plug 'regen100/cmake-language-server'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -198,6 +201,10 @@ lua <<EOF
   require('lspconfig').haxe_language_server.setup {
     capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
+
+  require('lspconfig').cmake.setup {
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+  }
 EOF
 
 " treesitter
@@ -336,5 +343,7 @@ elseif has("win32")
     endtry
 endif
 
+autocmd BufRead,BufNewFile *.zs set filetype=zbrush
+colorscheme vim-monokai-tasty
 
 filetype plugin on
