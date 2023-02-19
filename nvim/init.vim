@@ -23,7 +23,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'obaland/vfiler.vim'
 Plug 'patstockwell/vim-monokai-tasty'
-Plug 'regen100/cmake-language-server'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -31,6 +30,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'regen100/cmake-language-server'
 
 call plug#end()
 
@@ -102,7 +102,10 @@ nnoremap <F1> :VFiler<Enter>
 nnoremap <F3> :TagbarToggle<Enter>
 nnoremap <F4> ggVG"+y
 " Copy current buffer to clipboard
+
+" Command executions
 nnoremap <F5> :SendToMaya()<Enter>
+nnoremap <F7> :!clang++ %:p -o %:r; %:p:h/%:r<Enter>
 
 " Cursor move remapping
 noremap j gj
@@ -122,9 +125,6 @@ command! BW :bn|:bd#                " Close current buffer
 nnoremap sd :BW<Enter>
 nnoremap <Tab> :bnext<Enter>        " Next Buffer
 nnoremap <S-Tab> :bprevious<Enter>  " Previous Buffer
-
-" Command executions
-nnoremap <C-\> :call QuickAsyncRun()<Enter>
 
 " Insert line below the cursor
 noremap <CR> o<ESC>
