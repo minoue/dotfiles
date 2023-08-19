@@ -256,6 +256,18 @@ function! QuickAsyncRun() abort
     endif
 endfunction
 
+function! SetZBrushSyntax()
+    let current_folder = expand('%:p:h')
+    let current_name = expand('%:r')
+    let zscFile = current_folder . "/" . current_name . ".zsc"
+    if !empty(glob(zscFile))
+        set filetype=zbrush
+    else
+    endif
+    echo zscFile
+endfunction
+command! ZBrushSyntaxHighlight call SetZBrushSyntax()
+
 " Show AsyncRun output to quickfix
 augroup vimrc
     autocmd QuickFixCmdPost * botright copen 8
@@ -264,6 +276,11 @@ augroup END
 augroup PrevimSettings
     autocmd!
     autocmd BufNewFile, BufRead *.{md, mdwn, mkd, mkdn, mark*} set filetype=markdown
+augroup END
+
+augroup ZBrushSettingGroup
+    autocmd!
+    autocmd BufNewFile, BufRead *.txt ZBrushSyntaxHighlight
 augroup END
 
 
