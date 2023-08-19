@@ -1,4 +1,4 @@
-PS1="%m %~ 
+PS1="%m %~
 >> "
 
 autoload -Uz compinit && compinit
@@ -13,9 +13,6 @@ export PATH=$PYENV_ROOT/bin:$PATH
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
-#### C++ ####
-export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:~/.local/include
-
 #### Haxe ####
 # export HAXE_STD_PATH=~/opt/haxe/4.2.5/std
 # export HAXELIB_PATH=~/opt/haxe/haxe_libraries
@@ -29,8 +26,12 @@ case "$OSTYPE" in
     darwin*)
         # To run programs
         export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/.local/lib
+
         # To compile programs for mac
         export LIBRARY_PATH=$LIBRARY_PATH:~/.local/lib
+
+        export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:~/.local/include
+
         source ~/dotfiles/zsh/mac.sh
     ;;
     linux*)
