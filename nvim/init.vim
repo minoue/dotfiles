@@ -21,8 +21,8 @@ Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'obaland/vfiler.vim'
 Plug 'patstockwell/vim-monokai-tasty'
+Plug 'nvim-tree/nvim-tree.lua'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -98,14 +98,14 @@ set ambiwidth=single            " what to to with unicode chars of ambiguous wit
 " ######## KEY REMAPPINGS #########
 " #################################
 
-nnoremap <F1> :VFiler<Enter>
+nnoremap <F1> :NvimTreeToggle<Enter>
 nnoremap <F3> :TagbarToggle<Enter>
 nnoremap <F4> ggVG"+y
 " Copy current buffer to clipboard
 
 " Command executions
 nnoremap <F5> :SendToMaya()<Enter>
-nnoremap <F7> :!clang++ %:p -o %:r; %:p:h/%:r<Enter>
+nnoremap <F7> :!clang++ -std=c++17 %:p -o %:r; %:p:h/%:r<Enter>
 
 " Cursor move remapping
 noremap j gj
@@ -158,8 +158,8 @@ augroup END
 " ######### PLUGIN SETTINGS ###########
 " #####################################
 
-set omnifunc=syntaxcomplete#Complete
-set completeopt=menu,menuone,noselect
+" set omnifunc=syntaxcomplete#Complete
+" set completeopt=menu,menuone,noselect
 
 lua <<EOF
   -- Setup nvim-cmp.
@@ -205,6 +205,32 @@ lua <<EOF
   require('lspconfig').cmake.setup {
     capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
+EOF
+
+lua <<EOF
+    -- disable netrw at the very start of your init.lua
+    vim.g.loaded_netrw = 1
+    vim.g.loaded_netrwPlugin = 1
+
+    -- set termguicolors to enable highlight groups
+    vim.opt.termguicolors = true
+
+    -- empty setup using defaults
+    require("nvim-tree").setup()
+
+    -- OR setup with some options
+    require("nvim-tree").setup({
+    sort_by = "case_sensitive",
+    view = {
+        width = 30,
+    },
+    renderer = {
+        group_empty = true,
+    },
+    filters = {
+        dotfiles = true,
+    },
+    })
 EOF
 
 " treesitter
