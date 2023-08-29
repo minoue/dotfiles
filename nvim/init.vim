@@ -23,10 +23,17 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'nvim-tree/nvim-tree.lua'
+Plug 'ahmedkhalf/project.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
+Plug 'rmagatti/auto-session'
+Plug 'rmagatti/session-lens'
+
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
@@ -99,6 +106,7 @@ set ambiwidth=single            " what to to with unicode chars of ambiguous wit
 " #################################
 
 nnoremap <F1> :NvimTreeToggle<Enter>
+nnoremap <F2> :Telescope projects<Enter>
 nnoremap <F3> :TagbarToggle<Enter>
 nnoremap <F4> ggVG"+y
 " Copy current buffer to clipboard
@@ -153,6 +161,9 @@ augroup vimrc-auto-cursorline
   autocmd CursorHold,CursorHoldI * setlocal cursorline
 augroup END
 
+" Telescope
+nnoremap <C-p> <cmd>Telescope find_files<cr>
+
 
 " #####################################
 " ######### PLUGIN SETTINGS ###########
@@ -184,6 +195,7 @@ lua <<EOF
     },
     sources = {
       { name = 'nvim_lsp' },
+      { name = 'nvim_lua' },
       { name = 'buffer' },
       { name = 'path' },
     }
@@ -205,6 +217,34 @@ lua <<EOF
   require('lspconfig').cmake.setup {
     capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
+
+  require'lspconfig'.lua_ls.setup{
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+  }
+EOF
+
+lua <<EOF
+    require("auto-session").setup {
+        log_level = "error",
+        auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/"},
+    }
+EOF
+
+lua <<EOF
+    local telescope = require("telescope")
+    telescope.setup {
+        defaults = {
+            file_ignore_patterns = { 'build', '.git' }
+        },
+        pickers = {
+            find_files = {
+                hidden = true
+            }
+        }
+    }
+    telescope.load_extension('projects')
+    telescope.load_extension("session-lens")
+    -- telescope.extension.projects.projects{}
 EOF
 
 lua <<EOF
@@ -244,6 +284,20 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
+lua <<EOF
+require("project_nvim").setup {
+}
+
+require("nvim-tree").setup({
+  sync_root_with_cwd = true,
+  respect_buf_cwd = true,
+  update_focused_file = {
+    enable = true,
+    update_root = true
+  },
+})
+EOF
+
 " Lightline
 let g:lightline = {
     \ 'colorscheme': 'one',
@@ -256,7 +310,6 @@ let g:lightline = {
     \   'readonly': 'LightlineReadonly',
     \ },
     \ }
-
 
 function! LightlineReadonly()
     return &readonly && &filetype !=# 'help' ? '🔒' : ''
