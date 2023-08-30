@@ -349,6 +349,30 @@ function! SetZBrushSyntax()
 endfunction
 command! ZBrushSyntaxHighlight call SetZBrushSyntax()
 
+function! SendToMayaCommand() abort
+    if has('macunix')
+        let tmp_path = "/var/tmp/mayaScriptTmp.py"
+    elseif has('unix')
+        let tmp_path = "/usr/tmp/mayaScriptTmp.py"
+    else
+        " windows
+        echo "not supported yet"
+    endif
+
+    " get buffer content
+    let buff=getline(1, '$')
+
+    " command string
+    let cmd = "exec(open(\"" . tmp_path . "\").read())"
+
+    call writefile(buff, tmp_path)
+
+    let ch = sockconnect("tcp", "127.0.0.1:54321")
+    call chansend(ch, cmd)
+    call chanclose(ch)
+endfunction
+command! SendToMaya call SendToMayaCommand()
+
 " Show AsyncRun output to quickfix
 augroup vimrc
     autocmd QuickFixCmdPost * botright copen 8
