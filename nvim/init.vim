@@ -16,19 +16,15 @@ set runtimepath+=~/dotfiles/nvim/highlight
 call plug#begin('~/.vim/plugged')
 Plug 'troydm/easybuffer.vim', { 'On': 'EasyBuffer' }
 Plug 'majutsushi/tagbar', { 'On': 'tagbarToggle' }
-Plug 'tyru/caw.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'nvim-tree/nvim-tree.lua'
-Plug 'ahmedkhalf/project.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
 Plug 'rmagatti/auto-session'
-Plug 'rmagatti/session-lens'
-
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -114,6 +110,8 @@ nnoremap <F4> ggVG"+y
 " Command executions
 nnoremap <F5> :SendToMaya()<Enter>
 nnoremap <F7> :!clang++ -std=c++17 %:p -o %:r; %:p:h/%:r<Enter>
+nnoremap <F10> :Telescope session-lens search_session<Enter>
+
 
 " Cursor move remapping
 noremap j gj
@@ -229,6 +227,16 @@ lua <<EOF
     require("auto-session").setup {
         log_level = "error",
         auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/"},
+
+        -- ⚠️ This will only work if Telescope.nvim is installed
+        -- The following are already the default values, no need to provide them if these are already the settings you want.
+        session_lens = {
+            -- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
+            buftypes_to_ignore = {}, -- list of buffer types what should not be deleted from current session
+            load_on_setup = true,
+            theme_conf = { border = true },
+            previewer = false,
+        },
     }
 EOF
 
@@ -244,9 +252,6 @@ lua <<EOF
             }
         }
     }
-    telescope.load_extension('projects')
-    telescope.load_extension("session-lens")
-    -- telescope.extension.projects.projects{}
 EOF
 
 lua <<EOF
@@ -286,20 +291,6 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
-lua <<EOF
-require("project_nvim").setup {
-}
-
-require("nvim-tree").setup({
-  sync_root_with_cwd = true,
-  respect_buf_cwd = true,
-  update_focused_file = {
-    enable = true,
-    update_root = true
-  },
-})
-EOF
-
 " Lightline
 let g:lightline = {
     \ 'colorscheme': 'one',
@@ -311,10 +302,12 @@ let g:lightline = {
     \   'gitbranch': 'LightlineGitBranch',
     \   'readonly': 'LightlineReadonly',
     \ },
+    \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+    \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
     \ }
 
 function! LightlineReadonly()
-    return &readonly && &filetype !=# 'help' ? '🔒' : ''
+    return &readonly && &filetype !=# 'help' ? "\ue0a2" : ''
 endfunction
 
 function! LightlineGitBranch()
