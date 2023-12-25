@@ -331,16 +331,14 @@ function! QuickAsyncRun() abort
 endfunction
 
 function! SetZBrushSyntax()
-    let current_folder = expand('%:p:h')
-    let current_name = expand('%:r')
-    let zscFile = current_folder . "/" . current_name . ".zsc"
+    let fullPath = expand('%:p')
+    let ext = expand('%:e')
+    let zscFile = substitute(fullPath, ext, "zsc", "g")
+
     if !empty(glob(zscFile))
         set filetype=zbrush
-    else
     endif
-    echo zscFile
 endfunction
-command! ZBrushSyntaxHighlight call SetZBrushSyntax()
 
 function! SendToMayaCommand() abort
     if has('macunix')
@@ -371,14 +369,10 @@ augroup vimrc
     autocmd QuickFixCmdPost * botright copen 8
 augroup END
 
-augroup PrevimSettings
+augroup SyntaxSettings
     autocmd!
     autocmd BufNewFile, BufRead *.{md, mdwn, mkd, mkdn, mark*} set filetype=markdown
-augroup END
-
-augroup ZBrushSettingGroup
-    autocmd!
-    autocmd BufNewFile, BufRead *.txt ZBrushSyntaxHighlight
+    autocmd BufEnter *.txt call SetZBrushSyntax()
 augroup END
 
 
