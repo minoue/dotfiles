@@ -364,6 +364,31 @@ function! SendToMayaCommand() abort
 endfunction
 command! SendToMaya call SendToMayaCommand()
 
+function! CMAKE_RUN(action) abort
+    let current_dir = getcwd()
+    let proj_root = finddir('.git/..', expand('%:p:h').';')
+    let build_dir = proj_root . "/build"
+    exec "lcd " . build_dir
+
+    if a:action == "make"
+        let cmd = "!cmake " . proj_root
+    elseif a:action == "build"
+        let cmd = "!cmake --build " . build_dir . " --config Release"
+    elseif a:action == "clean"
+        let cleancmd = "!cmake --build " . build_dir . " --target clean"
+        exec cleancmd
+        let cmd = "!rm -rf Makefile CMakeCache.txt cmake_install.cmake CMakeFiles"
+    else 
+        echo "Undefined action"
+        return
+    endif
+    exec cmd
+    exec "lcd " . current_dir
+endfunction
+command! CMakeMake call CMAKE_RUN("make")
+command! CMakeBuild call CMAKE_RUN("build")
+command! CMakeClean call CMAKE_RUN("clean")
+
 " Show AsyncRun output to quickfix
 augroup vimrc
     autocmd QuickFixCmdPost * botright copen 8
