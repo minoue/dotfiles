@@ -6,6 +6,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 # PATH
 export PATH=~/.local/bin:$PATH
+export PATH="/usr/local/opt/openjdk/bin:$PATH"
 
 #### Python ####
 export PYENV_ROOT=$HOME/.pyenv
