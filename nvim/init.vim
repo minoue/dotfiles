@@ -22,9 +22,9 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'nvim-tree/nvim-tree.lua'
-Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/plenary.nvim' " Required by telescope
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
-Plug 'rmagatti/auto-session'
+Plug 'JoseConseco/telescope_sessions_picker.nvim'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -110,7 +110,8 @@ nnoremap <F4> ggVG"+y
 " Command executions
 nnoremap <F5> :SendToMaya()<Enter>
 nnoremap <F7> :!clang++ -std=c++17 %:p -o %:r; %:p:h/%:r<Enter>
-nnoremap <F10> :Telescope session-lens search_session<Enter>
+nnoremap <F9> :SaveSessionProject<Enter>
+nnoremap <F10> :Telescope sessions_picker<Enter>
 
 
 " Cursor move remapping
@@ -224,23 +225,6 @@ lua <<EOF
 EOF
 
 lua <<EOF
-    require("auto-session").setup {
-        log_level = "error",
-        auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/"},
-
-        -- ⚠️ This will only work if Telescope.nvim is installed
-        -- The following are already the default values, no need to provide them if these are already the settings you want.
-        session_lens = {
-            -- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
-            buftypes_to_ignore = {}, -- list of buffer types what should not be deleted from current session
-            load_on_setup = true,
-            theme_conf = { border = true },
-            previewer = false,
-        },
-    }
-EOF
-
-lua <<EOF
     local telescope = require("telescope")
     telescope.setup {
         defaults = {
@@ -250,8 +234,15 @@ lua <<EOF
             find_files = {
                 hidden = true
             }
-        }
+        },
+        extensions = {
+            sessions_picker = {
+                sessions_dir = vim.fn.expand('$HOME/.local/share/nvim/sessions/')
+            }
+        -- other tele extensions configs
+        },
     }
+    require('telescope').load_extension('sessions_picker')
 EOF
 
 lua <<EOF
@@ -388,6 +379,15 @@ endfunction
 command! CMakeMake call CMAKE_RUN("make")
 command! CMakeBuild call CMAKE_RUN("build")
 command! CMakeClean call CMAKE_RUN("clean")
+
+function! SaveSessionProjectCmd() abort
+    let proj_root = finddir('.git/..', expand('%:p:h').';')
+    let proj_name = split(proj_root, "/")[-1]
+    let session_dir = '~/.local/share/nvim/sessions'
+    let session_path = session_dir . "/" . proj_name . ".vim"
+    exec 'silent mksession!' session_path
+endfunction
+command! SaveSessionProject call SaveSessionProjectCmd()
 
 " Show AsyncRun output to quickfix
 augroup vimrc
