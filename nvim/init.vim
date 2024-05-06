@@ -234,12 +234,6 @@ lua <<EOF
                 hidden = true
             }
         },
-        extensions = {
-            sessions_picker = {
-                sessions_dir = vim.fn.expand('$HOME/.local/share/nvim/sessions/')
-            }
-        -- other tele extensions configs
-        },
     }
     require('telescope').load_extension('sessions_picker')
 EOF
