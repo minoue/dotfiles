@@ -374,9 +374,17 @@ command! CMakeBuild call CMAKE_RUN("build")
 command! CMakeClean call CMAKE_RUN("clean")
 
 function! SaveSessionProjectCmd() abort
-    let proj_root = finddir('.git/..', expand('%:p:h').';')
-    let proj_name = split(proj_root, "/")[-1]
-    let session_dir = '~/.local/share/nvim/sessions'
+    if has("win32")
+        let git_dir = finddir('.git', expand('%:p:h'). ';')
+        let proj_root = fnamemodify(git_dir, ':h')
+        let proj_name = fnamemodify(proj_root, ':p:h:t')
+        let session_dir = "~/AppData/Local/nvim-data/session"
+        let session_path = session_dir . "/" . proj_name . ".vim"
+    else
+        let proj_root = finddir('.git/..', expand('%:p:h').';')
+        let proj_name = split(proj_root, "/")[-1]
+        let session_dir = '~/.local/share/nvim/sessions'
+    endif
     let session_path = session_dir . "/" . proj_name . ".vim"
     exec 'silent mksession!' session_path
 endfunction
