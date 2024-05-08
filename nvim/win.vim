@@ -1,3 +1,2 @@
-let $PATH = $PATH . ';' . $HOME . '\AppData\Local\vim-lsp-settings\servers\nimlsp\bin'
-let $PYTHONPATH = $PYTHONPATH . ';E:\completion\py'
+let $PYTHONPATH = $PYTHONPATH . ';D:\library\Maya\maya-stubs-0.4.0\maya-stubs'
 set rop=type:directx
