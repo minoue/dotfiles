@@ -331,14 +331,15 @@ function! SendToMayaCommand() abort
         let tmp_path = "/usr/tmp/mayaScriptTmp.py"
     else
         " windows
-        echo "not supported yet"
+        let tmp_path = $HOME . "\\AppData\\Local\\Temp\\mayaScriptTmp.py"
     endif
 
     " get buffer content
     let buff=getline(1, '$')
 
     " command string
-    let cmd = "exec(open(\"" . tmp_path . "\").read())"
+    let cmd = "exec(open(R\"" . tmp_path . "\").read())"
+    echo cmd
 
     call writefile(buff, tmp_path)
 
