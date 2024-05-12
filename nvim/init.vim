@@ -25,6 +25,7 @@ Plug 'nvim-tree/nvim-tree.lua'
 Plug 'nvim-lua/plenary.nvim' " Required by telescope
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
 Plug 'JoseConseco/telescope_sessions_picker.nvim'
+Plug 'folke/tokyonight.nvim'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -480,6 +481,6 @@ elseif has("win32")
 endif
 
 autocmd BufRead,BufNewFile *.zs set filetype=zbrush
-colorscheme vim-monokai-tasty
+colorscheme tokyonight-night
 
 filetype plugin on
