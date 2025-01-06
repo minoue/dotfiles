@@ -1,36 +1,22 @@
 if has("syntax")
-  syntax on
+    syntax on
 endif
 
 if &compatible
-  set nocompatible
+    set nocompatible
 endif
 
-set background=dark
-
-" #####################################
-" ########## PLUGIN INSTALL ###########
-" #####################################
-"
-
-call plug#begin('~/.vim/plugged')
-Plug 'skywind3000/asyncrun.vim', {'On': 'asyncrun'}
+call plug#begin()
+Plug 'preservim/nerdtree', { 'On': 'NERDTreeToggle' }
 Plug 'troydm/easybuffer.vim', { 'On': 'EasyBuffer' }
 Plug 'majutsushi/tagbar', { 'On': 'tagbarToggle' }
-Plug 'lambdalisue/fern.vim'
-Plug 'previm/previm'
-Plug 'tyru/caw.vim'
-Plug 'cohama/agit.vim'
-Plug 'dense-analysis/ale'
-Plug 'minoue/mayaScriptEditor.vim'
+Plug 'tomasr/molokai'
+Plug 'mhinz/vim-startify'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
-Plug 'mhinz/vim-startify'
-
-" theme
-Plug 'patstockwell/vim-monokai-tasty'
-Plug 'ghifarit53/tokyonight-vim'
-
+Plug 'yegappan/lsp'
+Plug 'previm/previm'
+Plug 'tyru/open-browser.vim'
 call plug#end()
 
 " #####################################
@@ -94,17 +80,25 @@ set modifiable                  " Changes to the text are possible
 set shortmess+=I                " Disable startup message
 set antialias                   " Enable antialias
 set ambiwidth=single            " what to to with unicode chars of ambiguous with
+set belloff=all
+set shellslash
+
 
 " #################################
 " ######## KEY REMAPPINGS #########
 " #################################
 
 nnoremap <F1> :Startify<Enter>
-nnoremap <F2> :Fern . -drawer -toggle<Enter>
+nnoremap <F2> :NERDTreeToggle<Enter>
 nnoremap <F3> :TagbarToggle<Enter>
-nnoremap <F4>  ggVG"+y
+nnoremap <F4> ggVG"+y
+nnoremap <F7> :SendToMaya<Enter>
+nnoremap <F10> :LspDiagShow<Enter>
 " Copy current buffer to clipboard
-nnoremap <F5> :call MayaScriptEditorSendCmd()<Enter>
+
+" Command executions
+" nnoremap <F5> :SendToMaya()<Enter>
+" nnoremap <F7> :!clang++ -std=c++17 %:p -o %:r; %:p:h/%:r<Enter>
 
 " Cursor move remapping
 noremap j gj
@@ -114,9 +108,9 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" Copy and paste
-nnoremap Y "+y
-nnoremap P "+gP
+" Copy/Paste from/to clipboard
+vnoremap Y "+y
+nnoremap P "+p
 
 " Buffer management
 nnoremap <Space> :EasyBuffer<Enter>
@@ -124,9 +118,9 @@ command! BW :bn|:bd#                " Close current buffer
 nnoremap sd :BW<Enter>
 nnoremap <Tab> :bnext<Enter>        " Next Buffer
 nnoremap <S-Tab> :bprevious<Enter>  " Previous Buffer
-
-" Command executions
-nnoremap <C-\> :call QuickAsyncRun()<Enter>
+               
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 " Insert line below the cursor
 noremap <CR> o<ESC>
@@ -139,6 +133,10 @@ inoremap <C-Space> <C-x><C-o><C-p>
 
 " File path completion
 inoremap <C-f> <C-x><C-f><C-p>
+inoremap <expr> /
+      \ complete_info(['mode']).mode == 'files' && complete_info(['selected']).selected >= 0
+      \   ? '<c-x><c-f>'
+      \   : '/'
 
 " Killing Q
 nnoremap Q <Nop>
@@ -149,29 +147,45 @@ au FileType qf nnoremap <silent><buffer>q :quit<CR>
 " terminal settings
 tnoremap <ESC> <C-w><S-n>
 
-" Omni complete
-set omnifunc=syntaxcomplete#Complete
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-set completeopt=menuone     " Disable popup description
-
-nnoremap sh :call GitBash()<Enter>
-
-" for k in split("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_",'\zs')
-"   exec "imap <expr> " . k . " pumvisible() ? '" . k . "' : '" . k . "\<C-X>\<C-P>\<C-N>'"
-" endfor
-
 augroup vimrc-auto-cursorline
   autocmd!
   autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
   autocmd CursorHold,CursorHoldI * setlocal cursorline
 augroup END
 
-
 " #####################################
-" ######### PLUGIN SETTINGS ###########
+" ############### LSP #################
 " #####################################
+let lspOpts = #{
+            \ autoHighlightDiags: v:true,
+            \ completionMatcher: 'icase',
+            \ useBufferCompletion: v:true,
+            \ useQuickfixForLocation: v:false,
+            \}
+autocmd User LspSetup call LspOptionsSet(lspOpts)
 
+" python language server
+let lspServers = [#{
+	\    name: 'pylsp',
+	\    filetype: ['python'],
+	\    path: 'C:/Users/Michi/AppData/Roaming/Python/Python311/Scripts/pylsp.exe',
+	\    args: []
+	\ },
+    \ #{
+    \    name: 'clangd',  
+	\    filetype: ['c', 'cpp'],
+	\    path: 'C:/Program Files/LLVM/bin/clangd.exe',
+	\    args: ['--background-index', '--header-insertion=never']
+    \}
+    \]
+autocmd User LspSetup call LspAddServer(lspServers)
+
+" call LspAddServer([#{
+" 	\    name: 'clangd',
+" 	\    filetype: ['c', 'cpp'],
+" 	\    path: 'C:\\Program\ Files\\LLVM\\bin\\clangd.exe',
+" 	\    args: ['--background-index']
+" 	\  }])
 
 " Lightline
 let g:lightline = {
@@ -184,11 +198,12 @@ let g:lightline = {
     \   'gitbranch': 'LightlineGitBranch',
     \   'readonly': 'LightlineReadonly',
     \ },
+    \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+    \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
     \ }
 
-
 function! LightlineReadonly()
-    return &readonly && &filetype !=# 'help' ? '🔒' : ''
+    return &readonly && &filetype !=# 'help' ? "\ue0a2" : ''
 endfunction
 
 function! LightlineGitBranch()
@@ -200,29 +215,22 @@ function! LightlineGitBranch()
     endif
 endfunction
 
-" Asyncrun
-function! QuickAsyncRun() abort
-    if &filetype == 'cpp'
-        exec "AsyncRun! g++ -std=c++11 % -o %<; ./%<"
-    elseif &filetype == 'python'
-        exec "AsyncRun! python %"
-    endif
-endfunction
-
-" Show AsyncRun output to quickfix
-augroup vimrc
-    autocmd QuickFixCmdPost * botright copen 8
-augroup END
-
-augroup PrevimSettings
-    autocmd!
-    autocmd BufNewFile, BufRead *.{md, mdwn, mkd, mkdn, mark*} set filetype=markdown
-augroup END
-
+let g:previm_disable_default_css = 1
+let g:previm_custom_css_path = "C:\\Users\\Michi\\dotfiles\\markdown.css"
 
 " #####################################
 " ########## UTIL FUNCTIONS ###########
 " #####################################
+
+function! SetZBrushSyntax()
+    let fullPath = expand('%:p')
+    let ext = expand('%:e')
+    let zscFile = substitute(fullPath, ext, "zsc", "g")
+
+    if !empty(glob(zscFile))
+        set filetype=zbrush
+    endif
+endfunction
 
 " Remove Trailing Whitespaces
 function! RemoveTrailingWhiteSpaces()
@@ -249,9 +257,54 @@ function! Clang_format() abort
 endfunction
 command! ClangFormat call Clang_format()
 
-function! MayaMake() abort
-    exec "AsyncRun! cmake --build . --config Release --target install"
+function! SaveSessionProjectCmd() abort
+    if has("win32")
+        let git_dir = finddir('.git', expand('%:p:h'). ';')
+        let proj_root = fnamemodify(git_dir, ':h')
+        let proj_name = fnamemodify(proj_root, ':p:h:t')
+        let session_dir = "~/vim/session"
+        let session_path = session_dir . "/" . proj_name . ".vim"
+    else
+        let proj_root = finddir('.git/..', expand('%:p:h').';')
+        let proj_name = split(proj_root, "/")[-1]
+        let session_dir = '~/.local/share/nvim/sessions'
+    endif
+    let session_path = session_dir . "/" . proj_name . ".vim"
+    exec 'silent mksession!' session_path
 endfunction
+command! SaveSessionProject call SaveSessionProjectCmd()
+
+function! SendToMayaCommand() abort
+    if has('macunix')
+        let tmp_path = "/var/tmp/mayaScriptTmp.py"
+    elseif has('unix')
+        let tmp_path = "/usr/tmp/mayaScriptTmp.py"
+    else
+        " windows
+        let tmp_path = $HOME . "\\AppData\\Local\\Temp\\mayaScriptTmp.py"
+    endif
+
+    " get buffer content
+    let buff=getline(1, '$')
+
+    " command string
+    let cmd = "exec(open(R\"" . tmp_path . "\").read())"
+    echo cmd
+
+    call writefile(buff, tmp_path)
+
+    let ch = ch_open("127.0.0.1:54321")
+    call ch_sendraw(ch, cmd)
+    call ch_close(ch)
+endfunction
+command! SendToMaya call SendToMayaCommand()
+
+function! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
 
 
 " #####################################
@@ -268,39 +321,5 @@ set nofoldenable
 " CSH
 " Set csh syntax to cshrc
 autocmd BufNewFile,BufRead * if expand('%:t') == 'cshrc' | set syntax=csh | endif
-
-
-" #####################################
-" ########    OS SETTINGS    ##########
-" #####################################
-"
-" Load private settings
-" 
-if has("unix")
-    let s:uname = system("uname -s")
-    if s:uname == "Darwin\n"
-        " Mac
-        try
-            source $HOME/dotfiles/vim/mac.vim
-        catch
-            echo "Failed to load env file"
-        endtry
-    else
-        "Linux
-        try
-            source $HOME/linux.vim
-        catch
-            echo "Failed to load env file"
-        endtry
-    endif
-elseif has("win32")
-    " Windows
-    try
-        source $HOME/windows.vim
-    catch
-        echo "Failed to load env file"
-    endtry
-endif
-
 
 filetype plugin on
